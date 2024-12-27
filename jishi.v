@@ -1,14 +1,14 @@
-//计时模块
+
 module jishi(
 input clk_50M,
 input clk_1Hz,
-input [3:0] state_mode,//当前模式，4'd0:计时，4'd1设置时间 ，4'd2显示闹钟时间,4'd3设置闹钟时间
-input AH_key,//AH 修改小时
-input AM_key,//AM 修改分钟
-output [3:0] week_day,//星期
-output [7:0] hour_time,//时
-output [7:0] minute_time,//分
-output [7:0] second_time//秒
+input [3:0] state_mode,
+input AH_key,
+input AM_key,
+output [3:0] week_day,
+output [7:0] hour_time,
+output [7:0] minute_time,
+output [7:0] second_time
 );
 
 wire AH_key_negedge;
@@ -30,18 +30,18 @@ begin
 	AM_key_buf1<=AM_key_buf0;
 end
 
-assign AH_key_negedge=~AH_key_buf0 & AH_key_buf1;//按键下降沿
-assign AM_key_negedge=~AM_key_buf0 & AM_key_buf1; //按键下降沿
+assign AH_key_negedge=~AH_key_buf0 & AH_key_buf1;
+assign AM_key_negedge=~AM_key_buf0 & AM_key_buf1; 
 
-reg [7:0] hour=8'd12;//时
-reg [7:0] minute=8'd59;//分
-reg [7:0] second=8'd00;//秒
+reg [7:0] hour=8'd12;
+reg [7:0] minute=8'd59;
+reg [7:0] second=8'd00;
 
-reg [3:0] week=4'd1;//星期
+reg [3:0] week=4'd1;
 always@(posedge clk_50M)
 	case(state_mode)
-		4'd0,4'd2,4'd3://除设置时间的状态下，其他状态均计时
-			if(clk_1Hz)//1秒钟变一次
+		4'd0,4'd2,4'd3:
+			if(clk_1Hz)
 				if(hour==8'd23 && minute==8'd59 && second==8'd59)
 					if(week==4'd7)
 						week<=4'd1;
@@ -56,8 +56,8 @@ assign week_day=week;
 
 always@(posedge clk_50M)
 	case(state_mode)
-		4'd0,4'd2,4'd3://除设置时间的状态下，其他状态均计时
-			if(clk_1Hz)//1秒钟变一次
+		4'd0,4'd2,4'd3:
+			if(clk_1Hz)
 				if(hour==8'd23 && minute==8'd59 && second==8'd59)begin
 					hour<=8'd0;  
 					minute<=8'd0;  
@@ -78,7 +78,7 @@ always@(posedge clk_50M)
 					minute<=minute;  
 					second<=second+8'd1;				
 					end
-		4'd1:begin//4'd1设置时间
+		4'd1:begin
 			if(AH_key_negedge)
 				if(hour==8'd23)
 					hour<=8'd0;
