@@ -1,4 +1,4 @@
-//响铃模块包括闹钟
+
 module Bell(
 input clk_50M,
 input [7:0] alarm_hour_time,
