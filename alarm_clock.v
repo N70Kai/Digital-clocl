@@ -1,12 +1,12 @@
-//设置闹钟模块
+
 module alarm_clock(
 input clk_50M,
-input [3:0] state_mode,////当前模式，4'd0:计时，4'd1设置时间 ，4'd2显示闹钟时间,4'd3设置闹钟时间
-input AH_key,//AH 修改小时
-input AM_key,//AM 修改分钟
-output [7:0] alarm_hour_time,//时
-output [7:0] alarm_minute_time,//分
-output [7:0] alarm_second_time//秒
+input [3:0] state_mode,
+input AH_key,//
+input AM_key,//
+output [7:0] alarm_hour_time,
+output [7:0] alarm_minute_time,
+output [7:0] alarm_second_time
 );
 
 wire AH_key_negedge;
@@ -28,15 +28,15 @@ begin
 	AM_key_buf1<=AM_key_buf0;
 end
 
-assign AH_key_negedge=~AH_key_buf0 & AH_key_buf1;//按键下降沿
-assign AM_key_negedge=~AM_key_buf0 & AM_key_buf1;//按键下降沿
+assign AH_key_negedge=~AH_key_buf0 & AH_key_buf1;
+assign AM_key_negedge=~AM_key_buf0 & AM_key_buf1;
 
-reg [7:0] hour=8'd21;//时
-reg [7:0] minute=8'd59;//分
-reg [7:0] second=8'd00;//秒
+reg [7:0] hour=8'd21;
+reg [7:0] minute=8'd59;
+reg [7:0] second=8'd00;
 
 always@(posedge clk_50M)
-	if(state_mode==4'd3)begin	//4'd3设置闹钟时间
+	if(state_mode==4'd3)begin	
 			if(AH_key_negedge)
 				if(hour==8'd23)
 					hour<=8'd0;
